@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Menú Nutricional{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts para tipografía más moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-light" style="font-family: 'Roboto', sans-serif;">
+
+    <!-- Header con navbar más moderno -->
+    <header class="bg-success text-white shadow-sm mb-4">
+        <div class="container d-flex justify-content-between align-items-center py-3">
+            <h1 class="h3 fw-bold m-0">🍔 NutriMenu</h1>
+            <nav>
+                <a class="text-white text-decoration-none me-3 fw-semibold" href="/">Inicio</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mb-5">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer moderno -->
+    <footer class="bg-success text-white py-3 mt-auto">
+        <div class="container text-center">
+            <small>NutriMenu - Inspirado en Semantic Web y nutrición saludable</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS personalizado -->
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,75 @@
+
+{% extends "base.html" %}
+{% block title %}Menú{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-3 text-success">Buscador de Platos</h2>
+    <!-- buscador de platos -->
+        <div class="input-group mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Busca un plato...">
+        <button class="btn btn-success" id="searchBtn">Buscar</button>
+        </div>
+
+    <div id="autocomplete" class="list-group mb-4"></div>
+
+    <table class="table table-hover shadow-sm" id="menuTable">
+        <thead class="table-success">
+            <tr>
+                <th>Restaurante</th>
+                <th>Plato</th>
+                <th>Calorías</th>
+                <th>Proteína</th>
+                <th>Grasa</th>
+                <th>Carbohidratos</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            {% for item in items %}
+            <tr>
+                <td>{{ item.company }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.calories }}</td>
+                <td>{{ item.protein }}</td>
+                <td>{{ item.fat }}</td>
+                <td>{{ item.carbs }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Recomendaciones -->
+     <div class="mb-4">
+    <h4 class="mb-3">Platos Recomendados</h4>
+    <div class="row" id="recommendations">
+        {% if recommendations %}
+            {% for rec in recommendations %}
+            <div class="col-md-4 mb-3">
+                <div class="card card-hover h-100 p-3">
+                    <h5 class="card-title text-success fw-bold">{{ rec.name }}</h5>
+                    <p class="card-text">{{ rec.company }}</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-warning text-dark">Cal: {{ rec.calories }}</span>
+                        <span class="badge bg-info text-dark">Prot: {{ rec.protein }}g</span>
+                        <span class="badge bg-danger text-white">Grasa: {{ rec.fat }}g</span>
+                        <span class="badge bg-secondary text-white">Carbs: {{ rec.carbs }}g</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+ 
+{% endblock %}
+
+{% block scripts %}
+<!-- Primero definimos la variable desde Flask -->
+<script>
+    const allItems = {{ items | tojson }};
+</script>
+
+<!-- Después cargamos el script que la usa -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

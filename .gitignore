@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Entorno virtual
+venv/
+env/
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+#datos
+exported_data.csv
+FastFoodNurtritionMenuV2.csv
+FastFoodNurtritionMenuV3.csv
