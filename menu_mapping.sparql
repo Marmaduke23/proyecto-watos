@@ -1,0 +1,39 @@
+PREFIX ex: <http://example.com/menu#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+  ?item rdf:type ex:MenuItem .
+  ?item ex:company ?CompanyIRI .
+  ?item ex:itemName ?Item .
+  ?item ex:category ?Category .
+  ?item ex:calories ?Calories .
+  ?item ex:totalFat ?TotalFat .
+  ?item ex:saturatedFat ?SaturatedFat .
+  ?item ex:transFat ?TransFat .
+  ?item ex:cholesterol ?Cholesterol .
+  ?item ex:sodium ?Sodium .
+  ?item ex:carbs ?Carbs .
+  ?item ex:fiber ?Fiber .
+  ?item ex:sugars ?Sugars .
+  ?item ex:protein ?Protein .
+}
+WHERE {
+  # Generamos un URI único para cada fila usando el número de fila
+  BIND(URI(CONCAT("http://example.com/menu/item/", STR(?ROWNUM))) AS ?item)
+  
+  # Mapear los nombres de las compañías a sus IRIs de DBpedia
+  BIND(
+    IF(?Company = "McDonalds", <http://dbpedia.org/resource/McDonald's>,
+    IF(?Company = "Burger_King", <http://dbpedia.org/resource/Burger_King>,
+    IF(?Company = "Pizza_Hut", <http://dbpedia.org/resource/Pizza_Hut>,
+    IF(?Company = "KFC", <http://dbpedia.org/resource/KFC>,
+    IF(?Company = "Taco_Bell", <http://dbpedia.org/resource/Taco_Bell>,
+    IF(?Company = "Wendys", <http://dbpedia.org/resource/The_Wendy's_Company>,
+    IF(?Company = "Subway", <http://dbpedia.org/resource/Subway_(restaurant)>,
+       <http://example.com/menu#UnknownCompany>
+    ))))))) AS ?CompanyIRI
+  )
+  
+  # El resto de las variables se mapean directamente desde el CSV
+  # ?Item, ?Category, ?Calories, ?TotalFat, etc., provienen de los encabezados del CSV
+}
