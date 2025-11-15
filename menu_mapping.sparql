@@ -7,21 +7,21 @@ CONSTRUCT {
   ?item ex:itemName ?Item .
   ?item ex:category ?Category .
   ?item ex:calories ?Calories .
-  ?item ex:totalFat ?TotalFat .
-  ?item ex:saturatedFat ?SaturatedFat .
-  ?item ex:transFat ?TransFat .
-  ?item ex:cholesterol ?Cholesterol .
-  ?item ex:sodium ?Sodium .
-  ?item ex:carbs ?Carbs .
-  ?item ex:fiber ?Fiber .
-  ?item ex:sugars ?Sugars .
-  ?item ex:protein ?Protein .
+  ?item ex:totalFat ?Total_Fat_g .
+  ?item ex:saturatedFat ?Saturated_Fat_g .
+  ?item ex:transFat ?Trans_Fat_g .
+  ?item ex:cholesterol ?Cholesterol_mg .
+  ?item ex:sodium ?Sodium_mg .
+  ?item ex:carbs ?Carbs_g .
+  ?item ex:fiber ?Fiber_g .
+  ?item ex:sugars ?Sugars_g .
+  ?item ex:protein ?Protein_g .
 }
 WHERE {
-  # Generamos un URI único para cada fila usando el número de fila
+  # URI único por fila usando ROWNUM
   BIND(URI(CONCAT("http://example.com/menu/item/", STR(?ROWNUM))) AS ?item)
   
-  # Mapear los nombres de las compañías a sus IRIs de DBpedia
+  # Mapear nombre de la compañía a IRI de DBpedia
   BIND(
     IF(?Company = "McDonalds", <http://dbpedia.org/resource/McDonald's>,
     IF(?Company = "Burger_King", <http://dbpedia.org/resource/Burger_King>,
@@ -34,6 +34,17 @@ WHERE {
     ))))))) AS ?CompanyIRI
   )
   
-  # El resto de las variables se mapean directamente desde el CSV
-  # ?Item, ?Category, ?Calories, ?TotalFat, etc., provienen de los encabezados del CSV
+  # Mapear columnas del CSV a variables SPARQL
+  BIND(?Item AS ?Item)
+  BIND(?Category AS ?Category)
+  BIND(?Calories AS ?Calories)
+  BIND(?Total_Fat_g AS ?Total_Fat_g)
+  BIND(?Saturated_Fat_g AS ?Saturated_Fat_g)
+  BIND(?Trans_Fat_g AS ?Trans_Fat_g)
+  BIND(?Cholesterol_mg AS ?Cholesterol_mg)
+  BIND(?Sodium_mg AS ?Sodium_mg)
+  BIND(?Carbs_g AS ?Carbs_g)
+  BIND(?Fiber_g AS ?Fiber_g)
+  BIND(?Sugars_g AS ?Sugars_g)
+  BIND(?Protein_g AS ?Protein_g)
 }
