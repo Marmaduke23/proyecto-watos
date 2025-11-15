@@ -154,7 +154,6 @@ McDonald’s,Coca-Cola Classic (Child),Drink,110,0,0,0,0,5,29,0,29,0
 McDonald’s,Coca-Cola Classic (Small),Drink,150,0,0,0,0,10,40,0,40,0
 McDonald’s,Coca-Cola Classic (Medium),Drink,210,0,0,0,0,15,58,0,58,0
 McDonald’s,Coca-Cola Classic (Large),Drink,310,0,0,0,0,20,86,0,86,0
-Company,Item,Category,Calories,Total Fat (g),Saturated Fat (g),Trans Fat (g),Cholesterol (mg),Sodium (mg),Carbs (g),Fiber (g),Sugars (g),Protein (g)
 McDonald’s,Diet Coke (Child),Drink,0,0,0,0,0,15,0,0,0,0
 McDonald’s,Diet Coke (Small),Drink,0,0,0,0,0,20,0,0,0,0
 McDonald’s,Diet Coke (Medium),Drink,0,0,0,0,0,30,0,0,0,0
