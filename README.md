@@ -123,7 +123,7 @@ Ejecución:
 Asumiendo que está en el directorio donde se encuentra tarql.
 
 ```bash
-\tarql-1.2\bin\tarql.bat menu_mapping.sparql combined_menu_fixed.csv > combined_menu.ttl
+\tarql-1.2\bin\tarql.bat C:\tarql-1.2\bin\menu_mapping.sparql C:\PROYECTO-WATOS\combined_menu_fixed.csv > C:\PROYECTO-WATOS\combined_menu.ttl
 ```
 Lo anterior exporta un RDF en Turtle.
 
