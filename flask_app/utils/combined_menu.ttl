@@ -15857,7 +15857,7 @@
         ex:transFat      "0.0" ;
         ex:cholesterol   "0" ;
         ex:sodium        "50" ;
-        ex:carbs         "<1" ;
+        ex:carbs         "0" ;
         ex:fiber         "0" ;
         ex:sugars        "0" ;
         ex:protein       "0.0" .
