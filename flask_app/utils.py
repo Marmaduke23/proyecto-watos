@@ -1,13 +1,25 @@
 from rdflib import Graph, Namespace
 from rdflib.plugins.sparql import prepareQuery
+from pathlib import Path
 import numpy as np
 
-# --- Cargar grafo RDF ---
+# --- Load graph ---
 g = Graph()
-g.parse("utils/combined_menu.ttl", format="ttl")
+BASE_DIR = Path(__file__).resolve().parent
+ttl_file = BASE_DIR / "utils" / "combined_menu.ttl"
+g.parse(ttl_file, format="ttl")
+
+# Namespace FIXED — now matches your TTL exactly
 EX = Namespace("http://example.com/menu#")
 
-# --- Consulta SPARQL para obtener todos los platos ---
+# Helper for URI → local name
+def get_local_name(uri):
+    if uri is None:
+        return ""
+    last = str(uri).split("/")[-1]
+    return last.replace("_", " ")
+
+# SPARQL
 query_all = prepareQuery("""
     SELECT ?name ?company ?calories ?protein ?fat ?carbs ?category
     WHERE {
@@ -23,28 +35,26 @@ query_all = prepareQuery("""
 """, initNs={"ex": EX})
 
 def get_items_sparql():
-    """Devuelve todos los platos como lista de diccionarios."""
     results = []
     for row in g.query(query_all):
         results.append({
             "name": str(row.name),
-            "company": str(row.company),
+            "company": get_local_name(row.company),
             "calories": float(row.calories),
             "protein": float(row.protein),
             "fat": float(row.fat),
             "carbs": float(row.carbs),
-            "category": str(row.category) if row.category else ""
+            "category": get_local_name(row.category)
         })
     return results
 
-#Recomendador en base a distancia euclidiana
+# Recommender
 def platos_similares(nombre, k=6):
     items = get_items_sparql()
     base = next((p for p in items if p["name"].lower() == nombre.lower()), None)
     if not base:
         return []
-    
-    # Vector de nutrientes
+
     X_base = np.array([base["calories"], base["protein"], base["fat"], base["carbs"]])
     
     sims = []

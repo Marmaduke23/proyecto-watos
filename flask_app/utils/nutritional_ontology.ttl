@@ -1,0 +1,203 @@
+@prefix ex: <http://example.com/menu#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+##################################################
+# Core classes
+##################################################
+
+ex:MenuItem a rdfs:Class ;
+    rdfs:label "Menu item"@en .
+
+ex:Brand a rdfs:Class ;
+    rdfs:label "Brand"@en .
+
+ex:Category a rdfs:Class ;
+    rdfs:label "Category"@en .
+
+ex:NutritionalSeal a rdfs:Class ;
+    rdfs:label "Nutritional seal"@en .
+
+##################################################
+# Category instances
+##################################################
+
+ex:Bread a ex:Category ;
+    rdfs:label "Bread"@en .
+
+ex:Breakfast a ex:Category ;
+    rdfs:label "Breakfast"@en .
+
+ex:Cheese a ex:Category ;
+    rdfs:label "Cheese"@en .
+
+ex:Condiment a ex:Category ;
+    rdfs:label "Condiment"@en .
+
+ex:Dessert a ex:Category ;
+    rdfs:label "Dessert"@en .
+
+ex:Drink a ex:Category ;
+    rdfs:label "Drink"@en .
+
+ex:Extra a ex:Category ;
+    rdfs:label "Extra"@en .
+
+ex:KidsMeal a ex:Category ;
+    rdfs:label "KidsMeal"@en .
+
+ex:Pizza a ex:Category ;
+    rdfs:label "Pizza"@en .
+
+ex:Protein a ex:Category ;
+    rdfs:label "Protein"@en .
+
+ex:Salad a ex:Category ;
+    rdfs:label "Salad"@en .
+
+ex:Sandwich a ex:Category ;
+    rdfs:label "Sandwich"@en .
+
+ex:Sauces a ex:Category ;
+    rdfs:label "Sauces"@en .
+
+ex:Seasonings a ex:Category ;
+    rdfs:label "Seasonings"@en .
+
+ex:Snack a ex:Category ;
+    rdfs:label "Snack"@en .
+
+ex:Veggies a ex:Category ;
+    rdfs:label "Veggies"@en .
+
+ex:Wrap a ex:Category ;
+    rdfs:label "Wrap"@en .
+
+##################################################
+# Chilean Nutritional Seals (Law 20.606)
+##################################################
+
+ex:HighSugar a ex:NutritionalSeal ;
+    skos:prefLabel "High in Sugar"@en ;
+    ex:thresholdSolid 10.0 ;
+    ex:thresholdLiquid 5.0 ;
+    ex:unit "g" ;
+    ex:perAmount "per 100 g / 100 mL" .
+
+ex:HighSaturatedFat a ex:NutritionalSeal ;
+    skos:prefLabel "High in Saturated Fat"@en ;
+    ex:thresholdSolid 4.0 ;
+    ex:thresholdLiquid 3.0 ;
+    ex:unit "g" ;
+    ex:perAmount "per 100 g / 100 mL" .
+
+ex:HighCalories a ex:NutritionalSeal ;
+    skos:prefLabel "High in Calories"@en ;
+    ex:thresholdSolid 275.0 ;
+    ex:thresholdLiquid 70.0 ;
+    ex:unit "kcal" ;
+    ex:perAmount "per 100 g / 100 mL" .
+
+ex:HighSodium a ex:NutritionalSeal ;
+    skos:prefLabel "High in Sodium"@en ;
+    ex:thresholdSolid 400.0 ;
+    ex:thresholdLiquid 100.0 ;
+    ex:unit "mg" ;
+    ex:perAmount "per 100 g / 100 mL" .
+
+##################################################
+# Properties
+##################################################
+
+ex:company a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range ex:Brand .
+
+ex:itemName a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:string .
+
+ex:category a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range ex:Category .
+
+ex:calories a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:totalFat a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:saturatedFat a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:transFat a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:cholesterol a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:sodium a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:carbs a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:fiber a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:sugars a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+ex:protein a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range xsd:float .
+
+##################################################
+# Extra ontology properties for seals
+##################################################
+
+ex:hasSeal a rdf:Property ;
+    rdfs:domain ex:MenuItem ;
+    rdfs:range ex:NutritionalSeal .
+
+ex:thresholdSolid a rdf:Property ;
+    rdfs:domain ex:NutritionalSeal ;
+    rdfs:range xsd:float .
+
+ex:thresholdLiquid a rdf:Property ;
+    rdfs:domain ex:NutritionalSeal ;
+    rdfs:range xsd:float .
+
+ex:unit a rdf:Property ;
+    rdfs:domain ex:NutritionalSeal ;
+    rdfs:range xsd:string .
+
+ex:perAmount a rdf:Property ;
+    rdfs:domain ex:NutritionalSeal ;
+    rdfs:range xsd:string .
+
+##################################################
+# Brand instances
+##################################################
+
+<http://dbpedia.org/resource/McDonald's> a ex:Brand .
+<http://dbpedia.org/resource/Burger_King> a ex:Brand .
+<http://dbpedia.org/resource/Pizza_Hut> a ex:Brand .
+<http://dbpedia.org/resource/KFC> a ex:Brand .
+<http://dbpedia.org/resource/Taco_Bell> a ex:Brand .
+<http://dbpedia.org/resource/The_Wendy's_Company> a ex:Brand .
+<http://dbpedia.org/resource/Subway_(restaurant)> a ex:Brand .
+
+ex:UnknownCompany a ex:Brand ;
+    rdfs:label "Unknown Company"@en .
