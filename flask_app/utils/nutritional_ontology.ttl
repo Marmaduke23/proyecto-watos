@@ -20,6 +20,9 @@ ex:Category a rdfs:Class ;
 ex:NutritionalSeal a rdfs:Class ;
     rdfs:label "Nutritional seal"@en .
 
+ex:PhysicalState a rdfs:Class ;
+    rdfs:label "Physical State"@en .Z
+
 ##################################################
 # Category instances
 ##################################################
@@ -74,6 +77,16 @@ ex:Veggies a ex:Category ;
 
 ex:Wrap a ex:Category ;
     rdfs:label "Wrap"@en .
+
+##################################################
+# Physical State of Food Items
+##################################################
+
+ex:Liquid a ex:PhysicalState ;
+    rdfs:label "Liquid"@en .
+
+ex:Solid a ex:PhysicalState ;
+    rdfs:label "Solid"@en .
 
 ##################################################
 # Chilean Nutritional Seals (Law 20.606)
@@ -167,10 +180,6 @@ ex:protein a rdf:Property ;
 # Extra ontology properties for seals
 ##################################################
 
-ex:hasSeal a rdf:Property ;
-    rdfs:domain ex:MenuItem ;
-    rdfs:range ex:NutritionalSeal .
-
 ex:thresholdSolid a rdf:Property ;
     rdfs:domain ex:NutritionalSeal ;
     rdfs:range xsd:float .
@@ -186,6 +195,11 @@ ex:unit a rdf:Property ;
 ex:perAmount a rdf:Property ;
     rdfs:domain ex:NutritionalSeal ;
     rdfs:range xsd:string .
+
+ex:hasPhysicalState a rdf:Property ;
+    rdfs:label "has physical state"@en ;
+    rdfs:domain ex:Food ;
+    rdfs:range ex:PhysicalState .
 
 ##################################################
 # Brand instances

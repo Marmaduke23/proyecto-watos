@@ -19,7 +19,7 @@ def get_local_name(uri):
     last = str(uri).split("/")[-1]
     return last.replace("_", " ")
 
-# SPARQL
+# SPARQL ALL ITEMS
 query_all = prepareQuery("""
     SELECT ?name ?company ?calories ?protein ?fat ?carbs ?category
     WHERE {
@@ -34,6 +34,7 @@ query_all = prepareQuery("""
     }
 """, initNs={"ex": EX})
 
+# --- Consulta SPARQL para obtener todos los platos ---
 def get_items_sparql():
     results = []
     for row in g.query(query_all):
