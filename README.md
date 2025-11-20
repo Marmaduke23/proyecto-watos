@@ -207,3 +207,7 @@ flowchart TD
     Q --> R[merged.ttl]
     R --> S[RDF Graph]
 ```
+
+### *Uso de IA en el Proyecto
+Usamos IA para generar y optimizar consultas SPARQL complejas durante el desarrollo. Tambien la utilizamos como herramienta de estandarizacion de los datos, como por ejemplo otrogar categorias segun el nombre de la comida.
+Finalmente nos apoyamos para el desarrollo web en Flask y manejar la logica del aplicacion 
