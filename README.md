@@ -1,5 +1,17 @@
 # Proyecto: Menú de Comida Rápida
 
+## Instalación
+
+1. Clona este repositorio https://github.com/Marmaduke23/proyecto-watos.git.
+2. Instala las dependencias necesarias:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Arranca la aplicación ejecutando:
+   ```bash
+   python3 flask_app/app.py
+   ```
+
 ## Preparación para RDF
 
 Esta parte procesa menús de comida rápida de múltiples cadenas, limpia y combina los datos, y genera un grafo RDF listo para análisis semántico.
@@ -126,6 +138,8 @@ Asumiendo que está en el directorio donde se encuentra tarql.
 \tarql-1.2\bin\tarql.bat C:\tarql-1.2\bin\menu_mapping.sparql C:\PROYECTO-WATOS\combined_menu_fixed.csv > C:\PROYECTO-WATOS\combined_menu.ttl
 ```
 Lo anterior exporta un RDF en Turtle.
+
+## Post-procesamiento RDF
 
 ### Reparación semántica de combined_menu.ttl (fix_nutritional_values.py)
 
