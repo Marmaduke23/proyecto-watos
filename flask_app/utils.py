@@ -1,5 +1,6 @@
 from rdflib import Graph, Namespace
 from rdflib.plugins.sparql import prepareQuery
+from rdflib.namespace import SKOS, RDF, XSD
 from pathlib import Path
 import numpy as np
 import logging
@@ -15,6 +16,8 @@ g.parse(ttl_file, format="ttl")
 # Namespace
 EX = Namespace("http://example.com/menu#")
 g.bind("ex", EX)
+g.bind("skos", SKOS)
+g.bind("xsd", XSD)
 
 def get_local_name(uri):
     if uri is None:
@@ -43,72 +46,137 @@ def safe_float(lit):
     except ValueError:
         return 0.0
 
-# Thresholds copied EXACTLY from your working test script
-thresholds = {
-    "HighSugar": {"solid": 10.0, "liquid": 5.0, "label": "High in Sugar"},
-    "HighSaturatedFat": {"solid": 4.0, "liquid": 3.0, "label": "High in Saturated Fat"},
-    "HighCalories": {"solid": 275.0, "liquid": 70.0, "label": "High in Calories"},
-    "HighSodium": {"solid": 400.0, "liquid": 100.0, "label": "High in Sodium"},
-}
-
-def compute_seals(item):
-    state = item.get("state", "Solid").lower()
-    seals = []
-    if item["sugars"] >= thresholds["HighSugar"][state]:
-        seals.append(thresholds["HighSugar"]["label"])
-    if item["fat"] >= thresholds["HighSaturatedFat"][state]:
-        seals.append(thresholds["HighSaturatedFat"]["label"])
-    if item["calories"] >= thresholds["HighCalories"][state]:
-        seals.append(thresholds["HighCalories"]["label"])
-    if item["sodium"] >= thresholds["HighSodium"][state]:
-        seals.append(thresholds["HighSodium"]["label"])
-    return seals
-
 # --- SPARQL ---
 query_all = prepareQuery("""
-SELECT ?name ?company ?calories ?protein ?fat ?carbs ?sugars ?saturatedFat ?sodium ?category ?state
+PREFIX ex: <http://example.com/menu#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT
+    ?item ?name ?company ?calories ?protein ?fat ?carbs
+    ?sugars ?saturatedFat ?sodium ?category ?state ?sealLabel
 WHERE {
-    ?s a ex:MenuItem ;
-       ex:itemName ?name ;
-       ex:company ?company ;
-       ex:calories ?calories ;
-       ex:protein ?protein ;
-       ex:totalFat ?fat ;
-       ex:carbs ?carbs ;
-       ex:sugars ?sugars ;
-       ex:saturatedFat ?saturatedFat ;
-       ex:sodium ?sodium ;
-       OPTIONAL { ?s ex:category ?category }
-       OPTIONAL { ?s ex:state ?state }
+
+    ### CORE PRODUCT DATA ###
+    ?item a ex:MenuItem ;
+          ex:itemName ?name ;
+          ex:company ?company ;
+          ex:calories ?calories ;
+          ex:protein ?protein ;
+          ex:totalFat ?fat ;
+          ex:carbs ?carbs ;
+          ex:sugars ?sugars ;
+          ex:saturatedFat ?saturatedFat ;
+          ex:sodium ?sodium .
+
+    OPTIONAL { ?item ex:category ?category }
+    OPTIONAL { ?item ex:hasPhysicalState ?stateRaw }
+
+    # Normalize state to plain string "solid"|"liquid"
+    BIND(
+        IF(?stateRaw = ex:Liquid, "liquid",
+            IF(?stateRaw = ex:Solid, "solid", "solid")
+        ) AS ?state
+    )
+
+    ###########################
+    ### NUTRITIONAL SEALS #####
+    ###########################
+
+    # SUGAR SEAL — compare numeric values, cast item value to decimal
+    OPTIONAL {
+        ?sealSugar a ex:HighSugar ;
+                   skos:prefLabel ?sealSugarLabel ;
+                   ex:thresholdLiquid ?sugarLiquid ;
+                   ex:thresholdSolid ?sugarSolid .
+        FILTER(
+            (?state = "solid"  && xsd:float(?sugars) >= xsd:float(?sugarSolid)) ||
+            (?state = "liquid" && xsd:float(?sugars) >= xsd:float(?sugarLiquid))
+        )
+        BIND(?sealSugarLabel AS ?sealLabel)
+    }
+
+    # SATURATED FAT SEAL
+    OPTIONAL {
+        ?sealSF a ex:HighSaturatedFat ;
+                skos:prefLabel ?sealSFLabel ;
+                ex:thresholdLiquid ?sfLiquid ;
+                ex:thresholdSolid ?sfSolid .
+        FILTER(
+            (?state = "solid"  && xsd:float(?saturatedFat) >= xsd:float(?sfSolid)) ||
+            (?state = "liquid" && xsd:float(?saturatedFat) >= xsd:float(?sfLiquid))
+        )
+        BIND(?sealSFLabel AS ?sealLabel)
+    }
+
+    # CALORIES SEAL
+    OPTIONAL {
+        ?sealCal a ex:HighCalories ;
+                 skos:prefLabel ?sealCalLabel ;
+                 ex:thresholdLiquid ?calLiquid ;
+                 ex:thresholdSolid ?calSolid .
+        FILTER(
+            (?state = "solid"  && xsd:float(?calories) >= xsd:float(?calSolid)) ||
+            (?state = "liquid" && xsd:float(?calories) >= xsd:float(?calLiquid))
+        )
+        BIND(?sealCalLabel AS ?sealLabel)
+    }
+
+    # SODIUM SEAL
+    OPTIONAL {
+        ?sealNa a ex:HighSodium ;
+                skos:prefLabel ?sealNaLabel ;
+                ex:thresholdLiquid ?naLiquid ;
+                ex:thresholdSolid ?naSolid .
+        FILTER(
+            (?state = "solid"  && xsd:float(?sodium) >= xsd:float(?naSolid)) ||
+            (?state = "liquid" && xsd:float(?sodium) >= xsd:float(?naLiquid))
+        )
+        BIND(?sealNaLabel AS ?sealLabel)
+    }
 }
-ORDER BY ?name
-""", initNs={"ex": EX})
+""", initNs={"ex": EX, "skos": SKOS, "xsd": XSD})
 
 # --- Build item list ---
 def get_items_sparql():
-    results = []
+    """
+    Run the SPARQL that calculates seals and return a list of item dicts
+    with accumulated seals.
+    """
+    items_map = {}
 
     for row in g.query(query_all):
 
-        item = {
-            "name": str(row.name),
-            "company": get_local_name(row.company),
-            "calories": safe_float(row.calories),
-            "protein": safe_float(row.protein),
-            "fat": safe_float(row.fat),
-            "carbs": safe_float(row.carbs),
-            "sugars": safe_float(row.sugars),
-            "saturatedFat": safe_float(row.saturatedFat),
-            "sodium": safe_float(row.sodium),
-            "category": clean_category(row.category) if row.category else "",
-            "state": clean_category(row.state).lower() if row.state else "solid",
-        }
+        item_uri = str(row.item)
+        name = str(row.name)
 
-        item["seals"] = compute_seals(item)
+        # Initialize item entry if new
+        if item_uri not in items_map:
+            items_map[item_uri] = {
+                "uri": item_uri,
+                "name": name,
+                "company": get_local_name(row.company),
+                "calories": safe_float(row.calories),
+                "protein": safe_float(row.protein),
+                "fat": safe_float(row.fat),
+                "carbs": safe_float(row.carbs),
+                "sugars": safe_float(row.sugars),
+                "saturatedFat": safe_float(row.saturatedFat),
+                "sodium": safe_float(row.sodium),
+                "category": clean_category(row.category) if row.category else "",
+                # ensure state is a clean string (fallback to "solid")
+                "state": str(row.state) if row.state else "solid",
+                "seals": []
+            }
 
-        results.append(item)
+        # Append seal label when present (don't overwrite)
+        if row.sealLabel:
+            seal_label = str(row.sealLabel)
+            if seal_label not in items_map[item_uri]["seals"]:
+                items_map[item_uri]["seals"].append(seal_label)
 
-    return results
+    # Convert to list for use in the app
+    return list(items_map.values())
 
 # --- Recommender ---
 def platos_similares(nombre, k=6):
