@@ -14,7 +14,7 @@ import re
 import shutil
 from pathlib import Path
 
-INPUT = Path("combined_menu_original.ttl")
+INPUT = Path("combined_menu.ttl")
 BACKUP = INPUT.with_suffix(".bak")
 OUTPUT = Path("combined_menu_fixed.ttl")
 
