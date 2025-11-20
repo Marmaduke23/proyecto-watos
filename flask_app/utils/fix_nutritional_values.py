@@ -14,7 +14,7 @@ import re
 import shutil
 from pathlib import Path
 
-INPUT = Path("combined_menu.ttl")
+INPUT = Path("combined_menu_original.ttl")
 BACKUP = INPUT.with_suffix(".bak")
 OUTPUT = Path("combined_menu_fixed.ttl")
 
@@ -114,7 +114,7 @@ def main():
                     indent_match = re.match(r'(\s*)', last_nonempty)
                     indent = indent_match.group(1) if indent_match else '    '
                     # Append ex:state triple
-                    all_text += f"\n{indent}ex:state ex:{current_state} .\n"
+                    all_text += f"\n{indent}ex:hasPhysicalState ex:{current_state} .\n"
                 else:
                     all_text += "\n"
                 fout.write(all_text)

@@ -1,110 +1,165 @@
 from rdflib import Graph, Namespace
+from rdflib.namespace import SKOS, XSD
 from rdflib.plugins.sparql import prepareQuery
 from pathlib import Path
+import logging
 import numpy as np
+logger = logging.getLogger(__name__)
 
-# --- Load graph ---
-g = Graph()
+# --- Paths ---
 BASE_DIR = Path(__file__).resolve().parent
-ttl_file = BASE_DIR / "utils" / "combined_menu.ttl"
-g.parse(ttl_file, format="ttl")
+ORIGINAL_FILE = BASE_DIR / "utils/merged.ttl"
+CACHE_FILE = BASE_DIR / "utils/menu_with_seals.ttl"
 
-# Namespace
+# --- Namespaces ---
 EX = Namespace("http://example.com/menu#")
 
+# --- Helper functions ---
 def get_local_name(uri):
-    if uri is None:
-        return ""
-    return str(uri).split("/")[-1].replace("_", " ")
+    return str(uri).split("/")[-1].replace("_", " ") if uri else ""
 
 def clean_category(uri):
-    if not uri:
-        return ""
-    return uri.split("#")[-1]
+    return uri.split("#")[-1] if uri else ""
 
 def safe_float(lit):
     if lit is None:
         return 0.0
-
     value = str(lit).strip()
-
-    # Handle <1 etc.
     if value.startswith("<"):
         return 1.0
     if value.startswith(">"):
-        return float(value[1:]) if value[1:].isdigit() else 1.0
-
+        try:
+            return float(value[1:])
+        except:
+            return 1.0
     try:
         return float(value)
-    except ValueError:
+    except:
         return 0.0
 
-# Thresholds copied EXACTLY from your working test script
-thresholds = {
-    "HighSugar": {"solid": 10.0, "liquid": 5.0, "label": "High in Sugar"},
-    "HighSaturatedFat": {"solid": 4.0, "liquid": 3.0, "label": "High in Saturated Fat"},
-    "HighCalories": {"solid": 275.0, "liquid": 70.0, "label": "High in Calories"},
-    "HighSodium": {"solid": 400.0, "liquid": 100.0, "label": "High in Sodium"},
-}
+# --- Load graph with cache ---
+g = Graph()
+g.bind("ex", EX)
+g.bind("skos", SKOS)
+g.bind("xsd", XSD)
 
-def compute_seals(item):
-    state = item.get("state", "Solid").lower()
-    seals = []
-    if item["sugars"] >= thresholds["HighSugar"][state]:
-        seals.append(thresholds["HighSugar"]["label"])
-    if item["fat"] >= thresholds["HighSaturatedFat"][state]:
-        seals.append(thresholds["HighSaturatedFat"]["label"])
-    if item["calories"] >= thresholds["HighCalories"][state]:
-        seals.append(thresholds["HighCalories"]["label"])
-    if item["sodium"] >= thresholds["HighSodium"][state]:
-        seals.append(thresholds["HighSodium"]["label"])
-    return seals
+if CACHE_FILE.exists():
+    logger.info(f"Cargando grafo desde cache: {CACHE_FILE}")
+    g.parse(CACHE_FILE, format="ttl")
+else:
+    logger.info("Cache no encontrada. Cargando grafo original y calculando sellos...")
+    g.parse(ORIGINAL_FILE, format="ttl")
 
-# --- SPARQL ---
-query_all = prepareQuery("""
-SELECT ?name ?company ?calories ?protein ?fat ?carbs ?sugars ?saturatedFat ?sodium ?category ?state
-WHERE {
-    ?s a ex:MenuItem ;
-       ex:itemName ?name ;
-       ex:company ?company ;
-       ex:calories ?calories ;
-       ex:protein ?protein ;
-       ex:totalFat ?fat ;
-       ex:carbs ?carbs ;
-       ex:sugars ?sugars ;
-       ex:saturatedFat ?saturatedFat ;
-       ex:sodium ?sodium ;
-       OPTIONAL { ?s ex:category ?category }
-       OPTIONAL { ?s ex:state ?state }
-}
-ORDER BY ?name
-""", initNs={"ex": EX})
+    # --- SPARQL dinámico para calcular sellos ---
+    query_all = """
+    PREFIX ex: <http://example.com/menu#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-# --- Build item list ---
+    SELECT ?item ?seal ?sealLabel ?nutrient ?thresholdSolid ?thresholdLiquid ?state ?calories ?sugars ?saturatedFat ?sodium
+    WHERE {
+        ?item a ex:MenuItem ;
+              ex:hasPhysicalState ?stateRaw ;
+              ex:calories ?calories ;
+              ex:sugars ?sugars ;
+              ex:saturatedFat ?saturatedFat ;
+              ex:sodium ?sodium .
+
+        ?seal a ex:NutritionalSeal ;
+              skos:prefLabel ?sealLabel ;
+              ex:nutrient ?nutrient ;
+              ex:thresholdSolid ?thresholdSolid ;
+              ex:thresholdLiquid ?thresholdLiquid .
+
+        BIND(IF(?stateRaw = ex:Liquid, "liquid", "solid") AS ?state)
+
+        BIND(
+            IF(?nutrient = "calories", ?calories,
+            IF(?nutrient = "sugars", ?sugars,
+            IF(?nutrient = "saturatedFat", ?saturatedFat,
+            IF(?nutrient = "sodium", ?sodium, 0)))) AS ?nutrientValue
+        )
+
+        FILTER(
+            (?state = "solid"  && xsd:float(?nutrientValue) >= xsd:float(?thresholdSolid)) ||
+            (?state = "liquid" && xsd:float(?nutrientValue) >= xsd:float(?thresholdLiquid))
+        )
+    }
+    """
+    prepared_query = prepareQuery(query_all, initNs={"ex": EX, "skos": SKOS, "xsd": XSD})
+
+    # --- Agregar triples hasNutritionalSeal ---
+    for row in g.query(prepared_query):
+        g.add((row.item, EX.hasNutritionalSeal, row.seal))
+
+    # --- Guardar cache ---
+    g.serialize(destination=CACHE_FILE, format="ttl")
+    logger.info(f"Grafo con sellos guardado en cache: {CACHE_FILE}")
+
+
+
+# --- Función para obtener items con sellos ---
 def get_items_sparql():
-    results = []
+    items_map = {}
 
-    for row in g.query(query_all):
+    query = """
+    PREFIX ex: <http://example.com/menu#>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-        item = {
-            "name": str(row.name),
-            "company": get_local_name(row.company),
-            "calories": safe_float(row.calories),
-            "protein": safe_float(row.protein),
-            "fat": safe_float(row.fat),
-            "carbs": safe_float(row.carbs),
-            "sugars": safe_float(row.sugars),
-            "saturatedFat": safe_float(row.saturatedFat),
-            "sodium": safe_float(row.sodium),
-            "category": clean_category(row.category) if row.category else "",
-            "state": clean_category(row.state).lower() if row.state else "solid",
+    SELECT ?item ?name ?company ?calories ?protein ?fat ?carbs ?sugars ?saturatedFat ?sodium ?category ?state ?seal ?sealLabel
+    WHERE {
+        ?item a ex:MenuItem ;
+              ex:itemName ?name ;
+              ex:company ?company ;
+              ex:calories ?calories ;
+              ex:protein ?protein ;
+              ex:totalFat ?fat ;
+              ex:carbs ?carbs ;
+              ex:sugars ?sugars ;
+              ex:saturatedFat ?saturatedFat ;
+              ex:sodium ?sodium .
+
+        OPTIONAL { ?item ex:category ?category }
+        OPTIONAL { ?item ex:hasPhysicalState ?stateRaw }
+
+        BIND(IF(?stateRaw = ex:Liquid, "liquid", "solid") AS ?state)
+
+        OPTIONAL {
+            ?item ex:hasNutritionalSeal ?seal .
+            ?seal skos:prefLabel ?sealLabel .
         }
+    }
+    """
+    prepared_query = prepareQuery(query, initNs={"ex": EX, "skos": SKOS})
 
-        item["seals"] = compute_seals(item)
+    for row in g.query(prepared_query):
+        item_uri = str(row.item)
+        name = str(row.name)
 
-        results.append(item)
+        if item_uri not in items_map:
+            items_map[item_uri] = {
+                "uri": item_uri,
+                "name": name,
+                "company": get_local_name(row.company),
+                "calories": safe_float(row.calories),
+                "protein": safe_float(row.protein),
+                "fat": safe_float(row.fat),
+                "carbs": safe_float(row.carbs),
+                "sugars": safe_float(row.sugars),
+                "saturatedFat": safe_float(row.saturatedFat),
+                "sodium": safe_float(row.sodium),
+                "category": clean_category(row.category) if row.category else "",
+                "state": str(row.state) if row.state else "solid",
+                "seals": []
+            }
 
-    return results
+        if row.sealLabel:
+            seal_label = str(row.sealLabel)
+            if seal_label not in items_map[item_uri]["seals"]:
+                items_map[item_uri]["seals"].append(seal_label)
+
+    return list(items_map.values())
+
 
 # --- Recommender ---
 def platos_similares(nombre, k=6):
