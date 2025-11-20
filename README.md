@@ -2,12 +2,15 @@
 
 ## Instalación
 
-1. Clona este repositorio https://github.com/Marmaduke23/proyecto-watos.git.
+1. Clona este repositorio: https://github.com/Marmaduke23/proyecto-watos.git
+
 2. Instala las dependencias necesarias:
+
    ```bash
    pip install -r requirements.txt
    ```
 3. Arranca la aplicación ejecutando:
+   
    ```bash
    python3 flask_app/app.py
    ```
