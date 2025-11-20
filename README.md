@@ -1,5 +1,10 @@
 # Proyecto: Menú de Comida Rápida
 
+## Descripción
+Este proyecto procesa bases de datos de menús de comida rápida de varias cadenas, limpia, combina los datos y genera un grafo RDF para análisis semántico. Basado en Flask, lo que permite a los usuarios consultar información nutricional de los ítems del menú. 
+
+Adicionalmente, se ha desarrollado una ontología personalizada para representar mejor los datos nutricionales y poder asignar sellos de valor nutricional a los resultados SPARQL, en base a la ley chilena 20.606.
+
 ## Instalación
 
 1. Clona este repositorio: https://github.com/Marmaduke23/proyecto-watos.git
