@@ -166,7 +166,6 @@ python3 merge_ttl.py
 
 ### Diagrama de flujo del proceso
 
-```bash
 ```mermaid
 flowchart TD
     A[FastFoodNutritionMenuV3.csv] --> B[preprocessing_others.py]
