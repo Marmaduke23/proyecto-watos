@@ -21,7 +21,7 @@ ex:NutritionalSeal a rdfs:Class ;
     rdfs:label "Nutritional seal"@en .
 
 ex:PhysicalState a rdfs:Class ;
-    rdfs:label "Physical State"@en .Z
+    rdfs:label "Physical State"@en .
 
 ##################################################
 # Category instances

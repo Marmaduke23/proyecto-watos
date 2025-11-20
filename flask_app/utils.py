@@ -2,15 +2,19 @@ from rdflib import Graph, Namespace
 from rdflib.plugins.sparql import prepareQuery
 from pathlib import Path
 import numpy as np
+import logging
+
+logger = logging.getLogger(__name__)
 
 # --- Load graph ---
 g = Graph()
 BASE_DIR = Path(__file__).resolve().parent
-ttl_file = BASE_DIR / "utils" / "combined_menu.ttl"
+ttl_file = BASE_DIR / "utils" / "merged.ttl"
 g.parse(ttl_file, format="ttl")
 
 # Namespace
 EX = Namespace("http://example.com/menu#")
+g.bind("ex", EX)
 
 def get_local_name(uri):
     if uri is None:
