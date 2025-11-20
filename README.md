@@ -1,5 +1,25 @@
 # Proyecto: Menú de Comida Rápida
 
+## Descripción
+Este proyecto procesa bases de datos de menús de comida rápida de varias cadenas, limpia, combina los datos y genera un grafo RDF para análisis semántico. Basado en Flask, lo que permite a los usuarios consultar información nutricional de los ítems del menú. 
+
+Adicionalmente, se ha desarrollado una ontología personalizada para representar mejor los datos nutricionales y poder asignar sellos de valor nutricional a los resultados SPARQL, en base a la ley chilena 20.606.
+
+## Instalación
+
+1. Clona este repositorio: https://github.com/Marmaduke23/proyecto-watos.git
+
+2. Instala las dependencias necesarias:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Arranca la aplicación ejecutando:
+   
+   ```bash
+   python3 flask_app/app.py
+   ```
+
 ## Preparación para RDF
 
 Esta parte procesa menús de comida rápida de múltiples cadenas, limpia y combina los datos, y genera un grafo RDF listo para análisis semántico.
@@ -127,7 +147,46 @@ Asumiendo que está en el directorio donde se encuentra tarql.
 ```
 Lo anterior exporta un RDF en Turtle.
 
+## Post-procesamiento RDF
 
+### Reparación semántica de combined_menu.ttl (fix_nutritional_values.py)
+
+Algunos cambios fueron hechos para mejorar el diseño semántico de nuestros datos, incluyendo:
+
+1) Se arregló ex:category "Sandwich" → ex:category ex:Sandwich
+2) Transformación de strings numéricos a floats
+3) Añadir ex:state ex:Solid o ex:Liquid según la categoría específica de cada item
+4) Preservación de formato y tripletes
+
+Exporta un nuevo archivo `combined_menu_fixed.ttl`.
+
+Ejecución:
+
+```bash
+python3 fix_nutritional_values.py
+```
+
+### Nueva ontología (nutritional_ontology.ttl)
+
+Luego de analizar los datos y sus relaciones, se creó una ontología personalizada `nutritional_ontology.ttl` para representar mejor la información contenida.
+
+En ella se definen:
+
+1) Clases: MenuItem, Brand, Category, NutritionalSeal y PhysicalState
+2) Propiedades de objeto: company, itemName, category, hasPhysicalState, etc.
+3) Propiedades de datos: HighSugar, HighSaturatedFat, HighCalories, HighSodium, thresholdSolid, thresholdLiquid, perAmount, etc.
+
+### Unión de datos y ontología (merge_ttl.py)
+
+Posterormente, se unieron los datos con la ontología para crear un .ttl final completo con un grafo coherente. Exportando el resultado final a `merged.ttl`.
+
+Ejecución:
+
+```bash
+python3 merge_ttl.py
+```
+
+### Diagrama de flujo del proceso
 
 ```mermaid
 flowchart TD
@@ -142,5 +201,9 @@ flowchart TD
     J --> K[fixed.py]
     K --> L[combined_menu_fixed.csv]
     L --> M[menu_mapping.sparql]
-    M --> N[RDF Graph]
+    M --> N[fix_nutritional_values.py]
+    N --> O[combined_menu_fixed.ttl]
+    O & P[nutritional_ontology.ttl] --> Q[merge_ttl.py]
+    Q --> R[merged.ttl]
+    R --> S[RDF Graph]
 ```

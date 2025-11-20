@@ -1,5 +1,5 @@
 from rdflib import Graph, Namespace
-from rdflib.namespace import SKOS, XSD
+from rdflib.namespace import SKOS, XSD,RDF
 from rdflib.plugins.sparql import prepareQuery
 from pathlib import Path
 import logging
@@ -179,4 +179,36 @@ def platos_similares(nombre, k=6):
         sims.append((dist, p))
 
     sims.sort(key=lambda x: x[0])
-    return [s[1] for s in sims[:k]] 
+    return [s[1] for s in sims[:k]]
+
+def ttl_to_dict(ttl_file):
+    g = Graph()
+    g.parse(ttl_file, format="turtle")
+    EX = Namespace("http://example.com/menu#")
+
+    items = []
+
+    for item_uri in g.subjects(RDF.type, EX.MenuItem):
+        data = {
+            "food": str(item_uri),
+            "foodLabel": str(g.value(item_uri, EX.itemName)) or "",
+            "calories": float(g.value(item_uri, EX.calories) or 0),
+            "protein": float(g.value(item_uri, EX.protein) or 0),
+            "totalfat": float(g.value(item_uri, EX.totalFat) or 0),
+            "fatsaturated": float(g.value(item_uri, EX.saturatedFat) or 0),
+            "fattrans": float(g.value(item_uri, EX.transFat) or 0),
+            "carbs": float(g.value(item_uri, EX.carbs) or 0),
+            "sugar": float(g.value(item_uri, EX.sugars) or 0),
+            "fiber": float(g.value(item_uri, EX.fiber) or 0),
+            "cholesterol": float(g.value(item_uri, EX.cholesterol) or 0),
+            "sodium": float(g.value(item_uri, EX.sodium) or 0),
+            "company": str(g.value(item_uri, EX.company)) or "",
+            "category": str(g.value(item_uri, EX.category)) or "",
+            "hasPhysicalState": str(g.value(item_uri, EX.hasPhysicalState)) or "",
+            "wikiLink": str(g.value(item_uri, EX.wikiLink)) or ""
+        }
+        items.append(data)
+
+    return items
+
+print(ttl_to_dict("utils/foods_with_ontology.ttl"))
