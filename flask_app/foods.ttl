@@ -1,0 +1,43 @@
+@prefix ex: <http://example.com/menu#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/menu#item/1> a ex:MenuItem ;
+    ex:calories "500.0"^^xsd:float ;
+    ex:carbs "42.86"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "0.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "0.0"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighCalories,
+        ex:HighSaturatedFat,
+        ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "HANDCRAFTED GOURMET CROUTONS"^^xsd:string ;
+    ex:protein "14.29"^^xsd:float ;
+    ex:saturatedFat "7.14"^^xsd:float ;
+    ex:sodium "1000.0"^^xsd:float ;
+    ex:sugars "0.0"^^xsd:float ;
+    ex:totalFat "42.86"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q417573> .
+
+<http://example.com/menu#item/2> a ex:MenuItem ;
+    ex:calories "510.0"^^xsd:float ;
+    ex:carbs "40.0"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "0.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "0.0"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighCalories,
+        ex:HighSaturatedFat,
+        ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "HOUSE DELIGHTS, SEAWEED WITH PEAS"^^xsd:string ;
+    ex:protein "20.0"^^xsd:float ;
+    ex:saturatedFat "10.0"^^xsd:float ;
+    ex:sodium "1000.0"^^xsd:float ;
+    ex:sugars "0.0"^^xsd:float ;
+    ex:totalFat "30.0"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q310522> .
+

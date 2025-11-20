@@ -211,4 +211,21 @@ def ttl_to_dict(ttl_file):
 
     return items
 
-print(ttl_to_dict("utils/foods_with_ontology.ttl"))
+def map_item_to_json(item):
+    return {
+        "name": item.get("name", ""),
+        "company": item.get("company", ""),
+        "category": item.get("category", "Sin categoría"),
+        "calories": float(item.get("calories", 0)),
+        "protein": float(item.get("protein", 0)),
+        "fat": float(item.get("totalfat", 0)),         # aquí renombramos totalfat → fat
+        "carbs": float(item.get("carbs", 0)),
+        "sugars": float(item.get("sugar", 0)),
+        "saturatedFat": float(item.get("fatsaturated", 0)),
+        "sodium": float(item.get("sodium", 0)),
+        "transFat": float(item.get("fattrans", 0)),
+        "cholesterol": float(item.get("cholesterol", 0)),
+        "fiber": float(item.get("fiber", 0)),
+        "seals": item.get("seals", []),   # si ya tienes la función que calcula sellos
+        "wiki": item.get("wiki", "")
+    }

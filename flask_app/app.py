@@ -1,5 +1,5 @@
 from flask import Flask,render_template,jsonify, request
-from utils import get_items_sparql, platos_similares
+from utils import get_items_sparql, platos_similares, map_item_to_json
 
 app = Flask(__name__)
 
@@ -44,6 +44,25 @@ def recomendar():
         "plato_base": nombre,
         "recomendaciones": similares
     })
+
+@app.route("/recomendar_wiki")
+def recomendar_wiki():
+    # Supongamos que ya tienes una función que devuelve los platos desde el TTL
+    from querys import fetch_foods_with_ttl_and_json  # tu función que devuelve JSON listo
+    nombre = request.args.get("nombre")
+    items = get_items_sparql()
+    base_item = next((p for p in items if p["name"].lower() == nombre.lower()), None)
+    if not base_item:
+        return jsonify({"error": "Plato no encontrado"}), 404
+
+    plato_base = map_item_to_json(base_item)
+    print(plato_base)
+
+    recomendaciones = fetch_foods_with_ttl_and_json(plato_base)[0]
+    print(recomendaciones)
+
+    return jsonify({"recomendaciones": recomendaciones})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

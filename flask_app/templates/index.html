@@ -24,7 +24,6 @@
             <div class="col-md-3">
                 <label class="form-label">Restaurante</label>
                 <select id="filterRestaurant" class="form-select">
-                    <option value="">Todos</option>
                 </select>
             </div>
 
@@ -32,7 +31,6 @@
             <div class="col-md-3">
                 <label class="form-label">Categoría</label>
                 <select id="filterCategory" class="form-select">
-                    <option value="">Todas</option>
                 </select>
             </div>
 
@@ -178,7 +176,57 @@
             {% endif %}
         </div>
     </div>
+
+    <!-- Recomendaciones wiki -->
+    <div class="mb-4">
+        <h4 class="mb-3">Platos Recomendados desde WikiFCD</h4>
+        <div class="row" id="wiki-recommendations">
+            <div class="text-center my-3" id="wiki-spinner" style="display: none;">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+            
+            {% if wiki_recommendations %}
+                {% for rec in wiki_recommendations %}
+                <div class="col-md-4 mb-3">
+                    <div class="card card-hover h-100 p-3">
+                        <h5 class="card-title text-success fw-bold">
+                            <a href="{{ rec.wikibase }}" target="_blank">{{ rec.name }}</a>
+                        </h5>
+                        <p class="card-text">{{ rec.company }}</p>
+
+                        <div class="d-flex flex-wrap gap-2 mb-2">
+                            <span class="badge bg-warning text-dark">Cal: {{ rec.calories }}</span>
+                            <span class="badge bg-info text-dark">Prot: {{ rec.protein }}g</span>
+                            <span class="badge bg-danger text-white">Grasa: {{ rec.fat }}g</span>
+                            <span class="badge bg-secondary text-white">Carbs: {{ rec.carbs }}g</span>
+                        </div>
+
+                        <div class="small mb-2 text-muted">
+                            Azúcares: {{ rec.sugars }}g<br>
+                            Grasa Saturada: {{ rec.saturatedFat }}g<br>
+                            Sodio: {{ rec.sodium }}mg
+                        </div>
+
+                        <div>
+                            {% if rec.seals %}
+                                {% for s in rec.seals %}
+                                <span class="badge bg-danger text-white">{{ s }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">Sin sellos</span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>  
+    </div>
 </div>
+
 
 {% endblock %}
 
