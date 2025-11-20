@@ -25,9 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Inicializar filtros dinámicos
     // --------------------------
     function initFilters() {
-
+        // --------------------------
         // Restaurante
+        // --------------------------
         const restaurants = [...new Set(allItems.map(i => i.company))].sort();
+        const defaultRest = document.createElement("option");
+        defaultRest.value = "";
+        defaultRest.textContent = "Todos";
+        filterRestaurant.appendChild(defaultRest);
         restaurants.forEach(r => {
             const op = document.createElement("option");
             op.value = r;
@@ -35,18 +40,47 @@ document.addEventListener("DOMContentLoaded", () => {
             filterRestaurant.appendChild(op);
         });
 
+        // --------------------------
         // Categoría
+        // --------------------------
         const categories = [...new Set(allItems.map(i => i.category))].sort();
+        const defaultCat = document.createElement("option");
+        defaultCat.value = "";
+        defaultCat.textContent = "Todas";
+        filterCategory.appendChild(defaultCat);
         categories.forEach(c => {
             const op = document.createElement("option");
             op.value = c;
             op.textContent = c;
             filterCategory.appendChild(op);
         });
+
+        // --------------------------
+        // Sellos dinámicos
+        // --------------------------
+        const allSeals = [...new Set(allItems.flatMap(i => i.seals || []))].sort();
+
+        // Opción "Todos"
+        const allOption = document.createElement("option");
+        allOption.value = "";
+        allOption.textContent = "Todos";
+        filterSeals.appendChild(allOption);
+
+        // Opción "Ninguno"
+        const noneOption = document.createElement("option");
+        noneOption.value = "none";
+        noneOption.textContent = "Ninguno";
+        filterSeals.appendChild(noneOption);
+
+        // Opciones dinámicas de sellos
+        allSeals.forEach(s => {
+            const op = document.createElement("option");
+            op.value = s;
+            op.textContent = s;
+            filterSeals.appendChild(op);
+        });
     }
     initFilters();
-
-
 
     // --------------------------
     // Función general de filtrado avanzado
@@ -79,8 +113,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (p.fat      < minFat  || p.fat      > maxFat) return false;
             if (p.carbs    < minCarb || p.carbs    > maxCarb) return false;
 
-            if (seals === "sin" && p.seals && p.seals.length > 0) return false;
-            if (seals === "con" && (!p.seals || p.seals.length === 0)) return false;
+            // Filtro de sellos dinámico
+            if (seals === "none") {
+                // Solo productos sin sellos
+                if (p.seals && p.seals.length > 0) return false;
+            } else if (seals) {
+                // Solo productos con el sello seleccionado
+                if (!p.seals || !p.seals.includes(seals)) return false;
+            }
 
             return true;
         });
