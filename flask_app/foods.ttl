@@ -2,42 +2,111 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <http://example.com/menu#item/1> a ex:MenuItem ;
-    ex:calories "500.0"^^xsd:float ;
+    ex:calories "271.0"^^xsd:float ;
     ex:carbs "42.86"^^xsd:float ;
     ex:category ex:Sandwich ;
     ex:cholesterol "0.0"^^xsd:float ;
     ex:company <http://dbpedia.org/resource/FOOD_LION> ;
-    ex:fiber "0.0"^^xsd:float ;
-    ex:hasNutritionalSeal ex:HighCalories,
-        ex:HighSaturatedFat,
-        ex:HighSodium ;
+    ex:fiber "2.9"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSodium ;
     ex:hasPhysicalState ex:Solid ;
-    ex:itemName "HANDCRAFTED GOURMET CROUTONS"^^xsd:string ;
-    ex:protein "14.29"^^xsd:float ;
-    ex:saturatedFat "7.14"^^xsd:float ;
-    ex:sodium "1000.0"^^xsd:float ;
-    ex:sugars "0.0"^^xsd:float ;
-    ex:totalFat "42.86"^^xsd:float ;
+    ex:itemName "MULTIGRAIN WAFFLES"^^xsd:string ;
+    ex:protein "7.14"^^xsd:float ;
+    ex:saturatedFat "1.43"^^xsd:float ;
+    ex:sodium "600.0"^^xsd:float ;
+    ex:sugars "2.86"^^xsd:float ;
+    ex:totalFat "8.57"^^xsd:float ;
     ex:transFat "0.0"^^xsd:float ;
-    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q417573> .
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q146851> .
 
 <http://example.com/menu#item/2> a ex:MenuItem ;
-    ex:calories "510.0"^^xsd:float ;
-    ex:carbs "40.0"^^xsd:float ;
+    ex:calories "286.0"^^xsd:float ;
+    ex:carbs "46.43"^^xsd:float ;
     ex:category ex:Sandwich ;
     ex:cholesterol "0.0"^^xsd:float ;
     ex:company <http://dbpedia.org/resource/FOOD_LION> ;
-    ex:fiber "0.0"^^xsd:float ;
+    ex:fiber "3.6"^^xsd:float ;
     ex:hasNutritionalSeal ex:HighCalories,
-        ex:HighSaturatedFat,
         ex:HighSodium ;
     ex:hasPhysicalState ex:Solid ;
-    ex:itemName "HOUSE DELIGHTS, SEAWEED WITH PEAS"^^xsd:string ;
-    ex:protein "20.0"^^xsd:float ;
-    ex:saturatedFat "10.0"^^xsd:float ;
-    ex:sodium "1000.0"^^xsd:float ;
+    ex:itemName "SOFT TACO TORTILLAS"^^xsd:string ;
+    ex:protein "7.14"^^xsd:float ;
+    ex:saturatedFat "3.57"^^xsd:float ;
+    ex:sodium "536.0"^^xsd:float ;
     ex:sugars "0.0"^^xsd:float ;
-    ex:totalFat "30.0"^^xsd:float ;
+    ex:totalFat "8.93"^^xsd:float ;
     ex:transFat "0.0"^^xsd:float ;
-    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q310522> .
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q147384> .
+
+<http://example.com/menu#item/3> a ex:MenuItem ;
+    ex:calories "143.0"^^xsd:float ;
+    ex:carbs "11.76"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "20.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "1.4"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "GEFILTE FISH"^^xsd:string ;
+    ex:protein "11.76"^^xsd:float ;
+    ex:saturatedFat "1.37"^^xsd:float ;
+    ex:sodium "657.0"^^xsd:float ;
+    ex:sugars "7.84"^^xsd:float ;
+    ex:totalFat "5.88"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q149113> .
+
+<http://example.com/menu#item/4> a ex:MenuItem ;
+    ex:calories "247.0"^^xsd:float ;
+    ex:carbs "29.41"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "6.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "1.2"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "MICHELINA'S, PIZZA SNACKS ROLLS, PEPPERONI PIZZA IN A GOLDEN CRUST, PEPPERONI"^^xsd:string ;
+    ex:protein "7.06"^^xsd:float ;
+    ex:saturatedFat "2.94"^^xsd:float ;
+    ex:sodium "494.0"^^xsd:float ;
+    ex:sugars "2.35"^^xsd:float ;
+    ex:totalFat "11.76"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q147666> .
+
+<http://example.com/menu#item/5> a ex:MenuItem ;
+    ex:calories "93.0"^^xsd:float ;
+    ex:carbs "11.11"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "19.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "0.6"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "NEW ENGLAND STYLE PREMIUM CLAM CHOWDER"^^xsd:string ;
+    ex:protein "7.41"^^xsd:float ;
+    ex:saturatedFat "1.23"^^xsd:float ;
+    ex:sodium "660.0"^^xsd:float ;
+    ex:sugars "1.23"^^xsd:float ;
+    ex:totalFat "2.47"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q147289> .
+
+<http://example.com/menu#item/6> a ex:MenuItem ;
+    ex:calories "250.0"^^xsd:float ;
+    ex:carbs "50.0"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "0.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "3.6"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "ITALIAN SPLIT BREAD, SLICED"^^xsd:string ;
+    ex:protein "10.71"^^xsd:float ;
+    ex:saturatedFat "0.0"^^xsd:float ;
+    ex:sodium "536.0"^^xsd:float ;
+    ex:sugars "3.57"^^xsd:float ;
+    ex:totalFat "3.57"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q147180> .
 

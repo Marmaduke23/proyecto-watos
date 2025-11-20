@@ -48,7 +48,7 @@ def recomendar():
 @app.route("/recomendar_wiki")
 def recomendar_wiki():
     # Supongamos que ya tienes una función que devuelve los platos desde el TTL
-    from querys import fetch_foods_with_ttl_and_json  # tu función que devuelve JSON listo
+    from querys import fetch_foods_with_ttl_and_json  
     nombre = request.args.get("nombre")
     items = get_items_sparql()
     base_item = next((p for p in items if p["name"].lower() == nombre.lower()), None)
@@ -56,8 +56,7 @@ def recomendar_wiki():
         return jsonify({"error": "Plato no encontrado"}), 404
 
     plato_base = map_item_to_json(base_item)
-    print(plato_base)
-
+    
     recomendaciones = fetch_foods_with_ttl_and_json(plato_base)[0]
     print(recomendaciones)
 

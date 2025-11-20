@@ -176,16 +176,17 @@
             {% endif %}
         </div>
     </div>
-
+    <h4 class="mb-3">Platos Recomendados desde WikiFCD</h4>
+    <div class="text-center my-3" id="wiki-spinner" style="display: none;">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
     <!-- Recomendaciones wiki -->
     <div class="mb-4">
-        <h4 class="mb-3">Platos Recomendados desde WikiFCD</h4>
+        
         <div class="row" id="wiki-recommendations">
-            <div class="text-center my-3" id="wiki-spinner" style="display: none;">
-                <div class="spinner-border text-success" role="status">
-                    <span class="visually-hidden">Cargando...</span>
-                </div>
-            </div>
+
             
             {% if wiki_recommendations %}
                 {% for rec in wiki_recommendations %}

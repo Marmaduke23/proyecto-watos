@@ -6,10 +6,12 @@ from rdflib import Graph, Literal, Namespace, URIRef, XSD, RDF, SKOS
 ENDPOINT = "https://wikifcd.wikibase.cloud/query/sparql"
 
 TOLERANCES = {
-    "calories": 50, "totalfat": 3, "fatsaturated": 2, "fattrans": 0.5,
-    "cholesterol": 20, "sodium": 100, "carbs": 10, "fiber": 2,
-    "sugar": 2, "protein": 5
+    "calories": 200, "totalfat": 7, "fatsaturated": 4, "fattrans": 2,
+    "cholesterol": 20, "sodium": 100, "carbs": 20, "fiber": 4,
+    "sugar": 5, "protein": 7
 }
+
+
 
 NUTRITIONAL_SEALS = [
     {"seal": "HighCalories", "nutrient": "calories", "thresholdSolid": 275.0, "unit": "kcal"},
@@ -115,13 +117,20 @@ def fetch_foods_with_ttl_and_json(reference_values, limit=100, sample_size=6, la
         g.add((item_uri, EX.wikiLink, URIRef(row["food"])))
 
         # Sellos
+
+        SEAL_LABELS = {
+            "HighCalories": "High in Calories",
+            "HighSaturatedFat": "High in Saturated Fat",
+            "HighSodium": "High in Sodium",
+            "HighSugar": "High in Sugar",
+        }
         seals_json = []
         for seal in NUTRITIONAL_SEALS:
             val = row.get(seal["nutrient"], 0)
             if val >= seal["thresholdSolid"]:
                 seal_uri = EX[seal["seal"]]
                 g.add((item_uri, EX.hasNutritionalSeal, seal_uri))
-                seals_json.append(seal["seal"])
+                seals_json.append(SEAL_LABELS[seal["seal"]])
 
         # JSON
         json_list.append({

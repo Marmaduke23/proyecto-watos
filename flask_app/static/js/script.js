@@ -166,9 +166,12 @@ document.addEventListener("DOMContentLoaded", () => {
             renderTable(filtered);
 
             // Llamar a recomendaciones si hay resultados
-            if (filtered.length > 0) await fetchRecommendations(filtered[0].name);
-            else recommendationsDiv.innerHTML = "";
-            autocomplete.innerHTML = "";
+            if (filtered.length > 0) {
+            fetchRecommendations(filtered[0].name);
+            fetchRecommendationsWiki(filtered[0].name);
+            } else {
+            recommendationsDiv.innerHTML = "";
+            }
         }
     });
 
