@@ -124,4 +124,4 @@ def platos_similares(nombre, k=6):
         sims.append((dist, p))
 
     sims.sort(key=lambda x: x[0])
-    return [s[1] for s in sims[:k]]
+    return [s[1] for s in sims[:k]] 
