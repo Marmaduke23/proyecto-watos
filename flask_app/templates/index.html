@@ -13,6 +13,94 @@
 
     <div id="autocomplete" class="list-group mb-4"></div>
 
+    
+        <!-- Filtros avanzados -->
+    <div class="card p-3 mb-4 border border-success">
+        <h5 class="text-success">Filtros</h5>
+
+        <div class="row g-3 mt-1">
+
+            <!-- Restaurante -->
+            <div class="col-md-3">
+                <label class="form-label">Restaurante</label>
+                <select id="filterRestaurant" class="form-select">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+
+            <!-- Categoría -->
+            <div class="col-md-3">
+                <label class="form-label">Categoría</label>
+                <select id="filterCategory" class="form-select">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+
+            <!-- Sellos -->
+            <div class="col-md-3">
+                <label class="form-label">Sellos</label>
+                <select id="filterSeals" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="con">Con sellos</option>
+                    <option value="sin">Sin sellos</option>
+                </select>
+            </div>
+
+            <!-- CALORÍAS -->
+            <div class="col-12 mt-3">
+                <h6 class="text-success">Calorías</h6>
+                <div class="row g-2">
+                    <div class="col-md-2">
+                        <input type="number" id="filterMinCal" class="form-control" placeholder="Mín">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" id="filterMaxCal" class="form-control" placeholder="Máx">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROTEÍNA -->
+            <div class="col-12 mt-3">
+                <h6 class="text-success">Proteína</h6>
+                <div class="row g-2">
+                    <div class="col-md-2">
+                        <input type="number" id="filterMinProt" class="form-control" placeholder="Mín">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" id="filterMaxProt" class="form-control" placeholder="Máx">
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRASA -->
+            <div class="col-12 mt-3">
+                <h6 class="text-success">Grasa</h6>
+                <div class="row g-2">
+                    <div class="col-md-2">
+                        <input type="number" id="filterMinFat" class="form-control" placeholder="Mín">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" id="filterMaxFat" class="form-control" placeholder="Máx">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARBOHIDRATOS -->
+            <div class="col-12 mt-3">
+                <h6 class="text-success">Carbohidratos</h6>
+                <div class="row g-2">
+                    <div class="col-md-2">
+                        <input type="number" id="filterMinCarbs" class="form-control" placeholder="Mín">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" id="filterMaxCarbs" class="form-control" placeholder="Máx">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <table class="table table-hover shadow-sm" id="menuTable">
         <thead class="table-success">
         <tr>

@@ -6,6 +6,88 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchBtn = document.getElementById("searchBtn");
 
     // --------------------------
+    // Filtros
+    // --------------------------
+    const filterRestaurant = document.getElementById("filterRestaurant");
+    const filterCategory   = document.getElementById("filterCategory");
+    const filterSeals      = document.getElementById("filterSeals");
+
+    const filterMinCal  = document.getElementById("filterMinCal");
+    const filterMaxCal  = document.getElementById("filterMaxCal");
+    const filterMinProt = document.getElementById("filterMinProt");
+    const filterMaxProt = document.getElementById("filterMaxProt");
+    const filterMinFat  = document.getElementById("filterMinFat");
+    const filterMaxFat  = document.getElementById("filterMaxFat");
+    const filterMinCarb = document.getElementById("filterMinCarbs");
+    const filterMaxCarb = document.getElementById("filterMaxCarbs");
+
+    // --------------------------
+    // Inicializar filtros dinámicos
+    // --------------------------
+    function initFilters() {
+
+        // Restaurante
+        const restaurants = [...new Set(allItems.map(i => i.company))].sort();
+        restaurants.forEach(r => {
+            const op = document.createElement("option");
+            op.value = r;
+            op.textContent = r;
+            filterRestaurant.appendChild(op);
+        });
+
+        // Categoría
+        const categories = [...new Set(allItems.map(i => i.category))].sort();
+        categories.forEach(c => {
+            const op = document.createElement("option");
+            op.value = c;
+            op.textContent = c;
+            filterCategory.appendChild(op);
+        });
+    }
+    initFilters();
+
+
+
+    // --------------------------
+    // Función general de filtrado avanzado
+    // --------------------------
+    function applyFilters(list) {
+
+        const rest = filterRestaurant.value;
+        const cat  = filterCategory.value;
+        const seals = filterSeals.value;
+
+        const minCal = Number(filterMinCal.value || 0);
+        const maxCal = Number(filterMaxCal.value || Infinity);
+
+        const minProt = Number(filterMinProt.value || 0);
+        const maxProt = Number(filterMaxProt.value || Infinity);
+
+        const minFat = Number(filterMinFat.value || 0);
+        const maxFat = Number(filterMaxFat.value || Infinity);
+
+        const minCarb = Number(filterMinCarb.value || 0);
+        const maxCarb = Number(filterMaxCarb.value || Infinity);
+
+        return list.filter(p => {
+
+            if (rest && p.company !== rest) return false;
+            if (cat && p.category !== cat) return false;
+
+            if (p.calories < minCal || p.calories > maxCal) return false;
+            if (p.protein  < minProt || p.protein  > maxProt) return false;
+            if (p.fat      < minFat  || p.fat      > maxFat) return false;
+            if (p.carbs    < minCarb || p.carbs    > maxCarb) return false;
+
+            if (seals === "sin" && p.seals && p.seals.length > 0) return false;
+            if (seals === "con" && (!p.seals || p.seals.length === 0)) return false;
+
+            return true;
+        });
+    }
+
+
+    // --------------------------
     // Autocompletado mientras escribes
     // --------------------------
     input.addEventListener("input", () => {
@@ -39,23 +121,30 @@ document.addEventListener("DOMContentLoaded", () => {
     // Click en botón Buscar
     // --------------------------
     searchBtn.addEventListener("click", async () => {
-        const query = input.value.trim();
-        if (!query) return;
+        let query = input.value.trim().toLowerCase();
 
-        // Filtrar tabla localmente
-        const filtered = allItems.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
+        // Filtrar primero por nombre
+        let filtered = allItems.filter(p =>
+            p.name.toLowerCase().includes(query)
+        );
+
+        // Aplicar filtros avanzados (restaurante, categoría, rangos, sellos)
+        filtered = applyFilters(filtered);
+
+        // Renderizar tabla filtrada
         renderTable(filtered);
 
-        // Re-activar click en filas
+        // Habilitar selección de filas
         enableTableSelection();
 
-        // Obtener recomendaciones desde backend
+        // Recomendaciones desde el backend
         if (filtered.length > 0) {
             await fetchRecommendations(filtered[0].name);
         } else {
             recommendationsDiv.innerHTML = "";
         }
 
+        // Limpiar autocompletado
         autocomplete.innerHTML = "";
     });
 
@@ -86,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Click en fila → busca automáticamente
     // --------------------------
     function enableTableSelection() {
-        tableBody.addEventListener("click", (e) => {
+        tableBody.addEventListener("dblclick", (e) => {
             const row = e.target.closest("tr");
             if (!row) return;
 
