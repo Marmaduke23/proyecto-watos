@@ -149,13 +149,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // --------------------------
     // Doble click fila → búsqueda rápida
     // --------------------------
-    tableBody.addEventListener("dblclick", e => {
+    tableBody.addEventListener("dblclick", async e => {
         const row = e.target.closest("tr");
         if (!row) return;
         const nameCell = row.querySelector("td:nth-child(2)");
         if (nameCell) {
-            input.value = nameCell.textContent;
-            searchBtn.click();
+            const itemName = nameCell.textContent;
+            input.value = itemName;
+
+            // Filtrar por ese nombre exacto
+            let filtered = allItems.filter(p => p.name === itemName);
+            filtered = applyFilters(filtered);
+            renderTable(filtered);
+
+            // Llamar a recomendaciones si hay resultados
+            if (filtered.length > 0) await fetchRecommendations(filtered[0].name);
+            else recommendationsDiv.innerHTML = "";
+            autocomplete.innerHTML = "";
         }
     });
 
@@ -200,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `).join("");
 
         document.querySelectorAll(".card-hover").forEach(card => {
-            card.addEventListener("click", () => {
+            card.addEventListener("dblclick", () => {
                 input.value = card.getAttribute("data-name");
                 searchBtn.click();
             });
@@ -209,4 +219,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Render inicial
     renderTable(allItems);
+
+    if (allItems.length > 0) {
+    fetchRecommendations(allItems[0].name);
+    }
 });
