@@ -67,11 +67,19 @@ document.addEventListener("DOMContentLoaded", () => {
             <tr>
                 <td>${p.company}</td>
                 <td>${p.name}</td>
+                <td>${p.category}</td>
                 <td>${p.calories}</td>
                 <td>${p.protein}</td>
                 <td>${p.fat}</td>
                 <td>${p.carbs}</td>
-            </tr>`).join("");
+                <td>
+                    ${p.seals && p.seals.length > 0 
+                        ? p.seals.map(s => `<span class="badge bg-danger text-white">${s}</span>`).join(" ")
+                        : `<span class="text-muted">—</span>`
+                    }
+                </td>
+            </tr>
+        `).join("");
     }
 
     // --------------------------
@@ -105,26 +113,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderRecommendations(recommendations) {
-        if (!recommendationsDiv) return;
-
         recommendationsDiv.innerHTML = recommendations.map(r => `
             <div class="col-md-4 mb-3">
                 <div class="card card-hover h-100 p-3 recommendation-card" data-name="${r.name}">
                     <h5 class="card-title text-success fw-bold">${r.name}</h5>
                     <p class="card-text">${r.company}</p>
-                    <div class="d-flex flex-wrap gap-2">
+
+                    <div class="d-flex flex-wrap gap-2 mb-2">
                         <span class="badge bg-warning text-dark">Cal: ${r.calories}</span>
                         <span class="badge bg-info text-dark">Prot: ${r.protein}g</span>
                         <span class="badge bg-danger text-white">Grasa: ${r.fat}g</span>
                         <span class="badge bg-secondary text-white">Carbs: ${r.carbs}g</span>
                     </div>
+
+                    <!-- nuevos nutrientes -->
+                    <div class="small mb-2 text-muted">
+                        Azúcares: ${r.sugars}g<br>
+                        Grasa Saturada: ${r.saturatedFat}g<br>
+                        Sodio: ${r.sodium}mg
+                    </div>
+
+                    <div>
+                        ${r.seals && r.seals.length > 0 
+                            ? r.seals.map(s => `<span class="badge bg-danger text-white">${s}</span>`).join(" ")
+                            : `<span class="text-muted">Sin sellos</span>`
+                        }
+                    </div>
                 </div>
             </div>
         `).join("");
 
-        // --------------------------
-        // Click en recomendación → busca automáticamente
-        // --------------------------
+        // click en tarjetas → nueva búsqueda
         document.querySelectorAll(".recommendation-card").forEach(card => {
             card.addEventListener("click", () => {
                 const name = card.getAttribute("data-name");
@@ -134,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+
 
     // Inicializa click en filas existentes al cargar
     enableTableSelection();
