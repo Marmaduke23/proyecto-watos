@@ -1,0 +1,114 @@
+@prefix ex: <http://example.com/menu#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/menu#item/1> a ex:MenuItem ;
+    ex:calories "209.0"^^xsd:float ;
+    ex:carbs "28.06"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "18.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "2.9"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "FRESCHETTA, ARTISAN CRUST PIZZA, CHICKEN & FIRE ROASTED VEGETABLE"^^xsd:string ;
+    ex:protein "10.79"^^xsd:float ;
+    ex:saturatedFat "3.24"^^xsd:float ;
+    ex:sodium "453.0"^^xsd:float ;
+    ex:sugars "7.19"^^xsd:float ;
+    ex:totalFat "6.47"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q298758> .
+
+<http://example.com/menu#item/2> a ex:MenuItem ;
+    ex:calories "224.0"^^xsd:float ;
+    ex:carbs "26.53"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "14.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "2.7"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSaturatedFat,
+        ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "WOOD-FIRED CRUST PIZZA"^^xsd:string ;
+    ex:protein "12.24"^^xsd:float ;
+    ex:saturatedFat "4.76"^^xsd:float ;
+    ex:sodium "551.0"^^xsd:float ;
+    ex:sugars "4.76"^^xsd:float ;
+    ex:totalFat "7.48"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q204922> .
+
+<http://example.com/menu#item/3> a ex:MenuItem ;
+    ex:calories "248.0"^^xsd:float ;
+    ex:carbs "33.33"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "18.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "1.4"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSaturatedFat,
+        ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "ULTIMATE RISE CRUST PIZZA, 4-CHEESE"^^xsd:string ;
+    ex:protein "9.93"^^xsd:float ;
+    ex:saturatedFat "4.26"^^xsd:float ;
+    ex:sodium "518.0"^^xsd:float ;
+    ex:sugars "5.67"^^xsd:float ;
+    ex:totalFat "8.51"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q210424> .
+
+<http://example.com/menu#item/4> a ex:MenuItem ;
+    ex:calories "231.0"^^xsd:float ;
+    ex:carbs "24.62"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "27.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "1.5"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSaturatedFat,
+        ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "SPECIAL DELUXE TWO CHEESES, SAUSAGE, MUSHROOMS, PEPPERONI, BLACK OLIVES, GREEN & RED PEPPERS AND ONIONS PIZZA, SPECIAL DELUXE"^^xsd:string ;
+    ex:protein "8.46"^^xsd:float ;
+    ex:saturatedFat "5.38"^^xsd:float ;
+    ex:sodium "500.0"^^xsd:float ;
+    ex:sugars "5.38"^^xsd:float ;
+    ex:totalFat "10.77"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q215764> .
+
+<http://example.com/menu#item/5> a ex:MenuItem ;
+    ex:calories "230.0"^^xsd:float ;
+    ex:carbs "26.55"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "22.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "0.9"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "PULLED PORK QUESADILLAS, CHIPOTLE BBQ"^^xsd:string ;
+    ex:protein "11.5"^^xsd:float ;
+    ex:saturatedFat "3.1"^^xsd:float ;
+    ex:sodium "496.0"^^xsd:float ;
+    ex:sugars "5.31"^^xsd:float ;
+    ex:totalFat "7.96"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q222317> .
+
+<http://example.com/menu#item/6> a ex:MenuItem ;
+    ex:calories "259.0"^^xsd:float ;
+    ex:carbs "30.36"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "27.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "0.9"^^xsd:float ;
+    ex:hasNutritionalSeal ex:HighSodium ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "GRILLED CHICKEN SANDWICH"^^xsd:string ;
+    ex:protein "12.5"^^xsd:float ;
+    ex:saturatedFat "2.23"^^xsd:float ;
+    ex:sodium "429.0"^^xsd:float ;
+    ex:sugars "5.36"^^xsd:float ;
+    ex:totalFat "8.93"^^xsd:float ;
+    ex:transFat "0.89"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q204451> .
+

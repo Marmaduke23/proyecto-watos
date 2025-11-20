@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Click en fila → busca automáticamente
     // --------------------------
     function enableTableSelection() {
-        tableBody.addEventListener("click", (e) => {
+        tableBody.addEventListener("dblclick", (e) => {
             const row = e.target.closest("tr");
             if (!row) return;
 

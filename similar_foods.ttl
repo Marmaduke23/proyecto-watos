@@ -1,0 +1,105 @@
+@prefix ex: <http://example.com/menu#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/menu/item/1> a ex:MenuItem ;
+    ex:calories "272.0"^^xsd:float ;
+    ex:carbs "29.14"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "23.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "2.0"^^xsd:float ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "THIN & CRISPY PIZZA CRUST"^^xsd:string ;
+    ex:protein "12.58"^^xsd:float ;
+    ex:saturatedFat "5.3"^^xsd:float ;
+    ex:sodium "576.0"^^xsd:float ;
+    ex:sugars "4.64"^^xsd:float ;
+    ex:totalFat "11.92"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q178528> .
+
+<http://example.com/menu/item/2> a ex:MenuItem ;
+    ex:calories "255.0"^^xsd:float ;
+    ex:carbs "30.66"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "15.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "1.5"^^xsd:float ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "PIZZERIA STYLE CRUST PIZZA"^^xsd:string ;
+    ex:protein "8.76"^^xsd:float ;
+    ex:saturatedFat "4.38"^^xsd:float ;
+    ex:sodium "504.0"^^xsd:float ;
+    ex:sugars "5.11"^^xsd:float ;
+    ex:totalFat "10.95"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q155883> .
+
+<http://example.com/menu/item/3> a ex:MenuItem ;
+    ex:calories "247.0"^^xsd:float ;
+    ex:carbs "27.27"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "23.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "1.3"^^xsd:float ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "RED BARON, CLASSIC CRUST 4 - MEAT PIZZA"^^xsd:string ;
+    ex:protein "10.39"^^xsd:float ;
+    ex:saturatedFat "5.19"^^xsd:float ;
+    ex:sodium "558.0"^^xsd:float ;
+    ex:sugars "5.19"^^xsd:float ;
+    ex:totalFat "11.04"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q155890> .
+
+<http://example.com/menu/item/4> a ex:MenuItem ;
+    ex:calories "214.0"^^xsd:float ;
+    ex:carbs "27.92"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "19.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "1.9"^^xsd:float ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "MEIJER, CHICKEN SANDWICH, MONTEREY RANCH"^^xsd:string ;
+    ex:protein "9.74"^^xsd:float ;
+    ex:saturatedFat "2.6"^^xsd:float ;
+    ex:sodium "513.0"^^xsd:float ;
+    ex:sugars "5.19"^^xsd:float ;
+    ex:totalFat "7.79"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q296427> .
+
+<http://example.com/menu/item/5> a ex:MenuItem ;
+    ex:calories "237.0"^^xsd:float ;
+    ex:carbs "29.5"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "14.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "1.4"^^xsd:float ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "ORIGINAL THIN CRUST FIVE CHEESE PIZZA, MOZZARELLA, CHEDDAR, ASIAGO, PARMESAN & ROMANO"^^xsd:string ;
+    ex:protein "12.23"^^xsd:float ;
+    ex:saturatedFat "4.32"^^xsd:float ;
+    ex:sodium "532.0"^^xsd:float ;
+    ex:sugars "7.91"^^xsd:float ;
+    ex:totalFat "7.91"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q211774> .
+
+<http://example.com/menu/item/6> a ex:MenuItem ;
+    ex:calories "275.0"^^xsd:float ;
+    ex:carbs "31.87"^^xsd:float ;
+    ex:category ex:Sandwich ;
+    ex:cholesterol "22.0"^^xsd:float ;
+    ex:company <http://dbpedia.org/resource/FOOD_LION> ;
+    ex:fiber "2.2"^^xsd:float ;
+    ex:hasPhysicalState ex:Solid ;
+    ex:itemName "PIZZERIA BITES"^^xsd:string ;
+    ex:protein "10.99"^^xsd:float ;
+    ex:saturatedFat "4.4"^^xsd:float ;
+    ex:sodium "560.0"^^xsd:float ;
+    ex:sugars "4.4"^^xsd:float ;
+    ex:totalFat "10.99"^^xsd:float ;
+    ex:transFat "0.0"^^xsd:float ;
+    ex:wikiLink <https://wikifcd.wikibase.cloud/entity/Q256089> .
+
